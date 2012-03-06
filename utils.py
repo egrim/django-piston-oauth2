@@ -322,7 +322,11 @@ def send_consumer_mail(consumer):
     try:
         subject = settings.PISTON_OAUTH_EMAIL_SUBJECTS[consumer.status]
     except AttributeError:
-        subject = "Your API Consumer for %s " % Site.objects.get_current().name
+        subject = "Your API Consumer "
+        try:
+            subject += "for %s " % Site.objects.get_current().name
+        except Exception:
+            subject += "request "
         if consumer.status == "accepted":
             subject += "was accepted!"
         elif consumer.status == "canceled":
